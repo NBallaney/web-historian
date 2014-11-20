@@ -38,8 +38,9 @@ exports.serveAssets = serveAssets = function(response, requestedUrl, callback) {
       console.log('contains the url');
       return readFile(response, archive.paths.archivedSites+requestedUrl);
     } else {
-      console.log("FILE NOT FOUND");
-      return sendResponse(response, "File not found", 404);
+      archive.addUrlToList(response, requestedUrl);
+      // console.log("FILE NOT FOUND");
+      // return sendResponse(response, "File not found", 404);
     }
 });
 

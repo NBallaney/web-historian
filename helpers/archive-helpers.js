@@ -42,7 +42,7 @@ exports.addUrlToList = function(response, requestedUrl){
   fs.appendFile(paths.list, requestedUrl+"\n", "utf8", function(err) {
     if(err) throw err;
     console.log("Data was added to file");
-    httpHelpers.readFile(response, "./web/public/loading.html", 302);
+    httpHelpers.readFile(response, paths.siteAssets+"/loading.html", 302);
   });
 };
 

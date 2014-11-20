@@ -9,7 +9,14 @@ var actions = {
     httpHelpers.serveAssets(response, requestedUrl);
   },
   POST: function(request, response) {
-    archive.addUrlToList(response, request._postData.url);
+    var postData = "";
+    request.on("data", function(data) {
+      postData += data;
+    });
+    request.on("end", function() {
+      console.log('POSTDATA',postData.split("=")[1]);
+      httpHelpers.serveAssets(response, postData.split("=")[1]);
+    });
   },
   OPTIONS: function(request, response) {
     resonse.writeHead(200,httpHelpers.headers);
@@ -22,5 +29,4 @@ exports.handleRequest = function (request, response) {
   var requestedUrl = url.parse(request.url).path;
   console.log("HANDLEDREQUEST",requestedUrl);
   actions[request.method](request, response, requestedUrl);
-  response.end(archive.paths.list);
 };
