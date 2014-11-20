@@ -46,11 +46,14 @@ exports.handleGet = handleGet = function(response, requestedUrl) {
   if(requestedUrl === "/") {
       return readFile(response, archive.paths.siteAssets+"/index.html");
   }
-  readFile(response, requestedUrl);
+
+  if(requestedUrl.substring(1,4) === "www") {
+     return readFile(response, archive.paths.archivedSites+requestedUrl);
+  }
+
+  return readFile(response, archive.paths.siteAssets+requestedUrl);
 };
 
-      // console.log("FILE NOT FOUND");
-      // return sendResponse(response, "File not found", 404);
 
 
 // We have a get request
