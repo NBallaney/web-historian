@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var httpHelpers = require('../web/http-helpers')
 var _ = require('underscore');
-
+var httpRequest = require('http-request');
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
  * Consider using the `paths` object below to store frequently used file paths. This way,
@@ -22,9 +22,6 @@ exports.initialize = function(pathsObj){
     exports.paths[type] = path;
   });
 };
-
-// The following function names are provided to you to suggest how you might
-// modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback){
   fs.readFile(paths.list, "utf8", function(err,data) {
@@ -46,11 +43,23 @@ exports.addUrlToList = function(response, requestedUrl){
   });
 };
 
-exports.isURLArchived = function(){
+exports.isUrlArchived = function(urlList){
+  _.each(urlList, function (url) {
+    fs.readFile(paths.archivedSites + url, 'utf8' , function (err, data) {
+      if(err) return;
+      this.downloadUrls(url);
+    })
+  })
 };
 
-exports.downloadUrls = function(){
-
+exports.downloadUrls = function(url){
+  httpRequest.get({'url':url}, paths.archivedSites + url, function (err,res) {
+    console.log("DOWNLOADING URLS", res);
+    if(err) throw err;
+    fs.appendFile('/workers/log.txt', url, 'utf8', function(err) {
+      if(err) throw err;
+    });
+  });
 };
 
 

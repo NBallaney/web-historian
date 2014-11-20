@@ -31,9 +31,9 @@ exports.readFile = readFile = function(response, requestedUrl, statusCode) {
 exports.handlePost = handlePost = function(response, requestedUrl, callback) {
   console.log("SERVEDASSETS",requestedUrl);
 
-  archive.readListOfUrls(function(list) {
-    console.log('reading list of urls', list);
-    if(archive.isUrlInList(list, requestedUrl)) {
+  archive.readListOfUrls(function(urlList) {
+    console.log('reading list of urls', urlList);
+    if(archive.isUrlInList(urlList, requestedUrl)) {
       console.log('contains the url',requestedUrl);
       return readFile(response, archive.paths.archivedSites+"/"+requestedUrl);
     } else {
