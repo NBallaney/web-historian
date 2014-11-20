@@ -11,8 +11,8 @@ exports.headers = headers = {
 };
 
 exports.sendResponse = sendResponse = function(response, html, statusCode) {
-  console.log("SENT RESPONSE",statusCode);
   statusCode = statusCode || 200;
+  console.log("SENT RESPONSE",html);
   response.writeHead(statusCode, headers);
   response.end(html);
 };
@@ -21,6 +21,7 @@ exports.readFile = readFile = function(response, requestedUrl, statusCode) {
   console.log("READFILE",requestedUrl);
   fs.readFile(requestedUrl, "utf8", function(err, data) {
     if(err) throw err;
+    console.log("READFILEDATA",data);
     sendResponse(response, data, statusCode);
   });
 }
@@ -28,35 +29,22 @@ exports.readFile = readFile = function(response, requestedUrl, statusCode) {
 exports.serveAssets = serveAssets = function(response, requestedUrl, callback) {
   console.log("SERVEDASSETS",requestedUrl);
   if(requestedUrl === "/") {
-    return readFile(response, "./web/public/index.html");
+    return readFile(response, archive.paths.siteAssets+"/index.html");
   }
 
   archive.readListOfUrls(function(list) {
     console.log('reading list of urls', list);
     if(archive.isUrlInList(list, requestedUrl.slice(1))) {
       console.log('contains the url');
-      return readFile(response, "./archives/sites"+requestedUrl);
+      return readFile(response, archive.paths.archivedSites+requestedUrl);
     } else {
-      return archive.addUrlToList(response, requestedUrl);
+      console.log("FILE NOT FOUND");
+      return sendResponse(response, "File not found", 404);
     }
 });
-
-
-  // We have a site URL
-  // Read the sites
-    // Find out if it's in the list
-    // If it is in the list
-      // Read the file
-      // SendResponse with the file
-    // If it's not in the list
-      // Add it to the list
-      // Return the loading page
-
-
 
 };
 
 
 
 
-// As you progress, keep thinking about what helper functions you can put here!

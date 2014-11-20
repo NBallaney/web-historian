@@ -12,7 +12,8 @@ var actions = {
     archive.addUrlToList(response, request._postData.url);
   },
   OPTIONS: function(request, response) {
-
+    resonse.writeHead(200,httpHelpers.headers);
+    response.end();
   }
 };
 

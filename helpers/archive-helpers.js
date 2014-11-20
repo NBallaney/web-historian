@@ -27,10 +27,10 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback){
-  fs.readFile("./archives/sites.txt", "utf8", function(err,data) {
+  fs.readFile(paths.list, "utf8", function(err,data) {
     if(err) throw err;
     var urlList = data.split("\n");
-    callback(urlList)
+    callback(urlList);
   });
 };
 
@@ -50,6 +50,7 @@ exports.isURLArchived = function(){
 };
 
 exports.downloadUrls = function(){
+
 };
 
 
