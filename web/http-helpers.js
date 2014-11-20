@@ -26,12 +26,31 @@ exports.readFile = readFile = function(response, requestUrl) {
 }
 
 exports.serveAssets = serveAssets = function(response, requestUrl, callback) {
-  // Write some code here that helps serve up your static files!
-  // (Static files are things like html (yours or archived from others...), css, or anything that doesn't change often.)
   console.log("SERVEDASSETS",requestUrl);
   if(requestUrl === "/") {
-    readFile(response, "./web/public/index.html");
+    return readFile(response, "./web/public/index.html");
   }
+
+  archive.readListOfUrls(function(list) {
+    console.log('reading list of urls', list);
+    if(archive.isUrlInList(list, requestUrl)) {
+      console.log('contains the url');
+      readFile(response, "./archives/sites"+requestUrl);
+    }
+  });
+
+  // We have a site URL
+  // Read the sites
+    // Find out if it's in the list
+    // If it is in the list
+      // Read the file
+      // SendResponse with the file
+    // If it's not in the list
+      // Add it to the list
+      // Return the loading page
+
+
+
 };
 
 
