@@ -41,7 +41,7 @@ exports.isUrlInList = function(list, requestedUrl){
 exports.addUrlToList = function(response, requestedUrl){
   fs.appendFile(paths.list, requestedUrl+"\n", "utf8", function(err) {
     if(err) throw err;
-    console.log("Data was added to file");
+    console.log("Url was added to file");
     httpHelpers.readFile(response, paths.siteAssets+"/loading.html", 302);
   });
 };

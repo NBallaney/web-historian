@@ -20,31 +20,53 @@ exports.sendResponse = sendResponse = function(response, html, statusCode) {
 exports.readFile = readFile = function(response, requestedUrl, statusCode) {
   console.log("READFILE",requestedUrl);
   fs.readFile(requestedUrl, "utf8", function(err, data) {
-    if(err) throw err;
+    if(err) {
+      sendResponse(response, "FILE NOT FOUND", 404);
+    }
     console.log("READFILEDATA",data);
     sendResponse(response, data, statusCode);
   });
 }
 
-exports.serveAssets = serveAssets = function(response, requestedUrl, callback) {
+exports.handlePost = handlePost = function(response, requestedUrl, callback) {
   console.log("SERVEDASSETS",requestedUrl);
-  if(requestedUrl === "/") {
-    return readFile(response, archive.paths.siteAssets+"/index.html");
-  }
 
   archive.readListOfUrls(function(list) {
     console.log('reading list of urls', list);
-    if(archive.isUrlInList(list, requestedUrl.slice(1))) {
+    if(archive.isUrlInList(list, requestedUrl)) {
       console.log('contains the url',requestedUrl);
-      return readFile(response, archive.paths.archivedSites+requestedUrl);
+      return readFile(response, archive.paths.archivedSites+"/"+requestedUrl);
     } else {
       archive.addUrlToList(response, requestedUrl);
+    }
+  });
+}
+
+exports.handleGet = handleGet = function(response, requestedUrl) {
+  if(requestedUrl === "/") {
+      return readFile(response, archive.paths.siteAssets+"/index.html");
+  }
+  readFile(response, requestedUrl);
+};
+
       // console.log("FILE NOT FOUND");
       // return sendResponse(response, "File not found", 404);
-    }
-});
 
-};
+
+// We have a get request
+  // If the url is "/", serve up index.html
+  // If the file exists
+    // Serve up that file
+  // Else
+    // Return a 404
+
+// We have a post request
+  // See if the URL is in the list
+  // If it is
+    // Serve the cached version
+  // If it's not
+    // Then add it to the list
+    // Serve the loading page
 
 
 

@@ -6,7 +6,7 @@ var url = require('url');
 
 var actions = {
   GET: function(request, response, requestedUrl) {
-    httpHelpers.serveAssets(response, requestedUrl);
+    httpHelpers.handleGet(response, requestedUrl);
   },
   POST: function(request, response) {
     var postData = "";
@@ -15,7 +15,7 @@ var actions = {
     });
     request.on("end", function() {
       console.log('POSTDATA',postData.split("=")[1]);
-      httpHelpers.serveAssets(response, "/"+postData.split("=")[1]);
+      httpHelpers.handlePost(response, postData.split("=")[1]);
     });
   },
   OPTIONS: function(request, response) {
