@@ -1,5 +1,6 @@
 www.google.com
-www.google.com
+
 /styles.css
-www.google.com
-/public/styles.css
+/logos/doodles/2014/first-day-of-spring-2014-5086324449083392-hp.jpg
+/images/srpr/nav_logo80.png
+/xjs/_/js/k=xjs.hp.en_US.kp0xCxB0r8A.O/m=sb_he,pcc/rt=j/d=1/sv=1/rs=AItRSTNdEYARaas94W_3Cg7TzfIJF22JmQ

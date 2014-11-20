@@ -35,7 +35,7 @@ exports.serveAssets = serveAssets = function(response, requestedUrl, callback) {
   archive.readListOfUrls(function(list) {
     console.log('reading list of urls', list);
     if(archive.isUrlInList(list, requestedUrl.slice(1))) {
-      console.log('contains the url');
+      console.log('contains the url',requestedUrl);
       return readFile(response, archive.paths.archivedSites+requestedUrl);
     } else {
       archive.addUrlToList(response, requestedUrl);

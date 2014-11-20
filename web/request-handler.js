@@ -15,7 +15,7 @@ var actions = {
     });
     request.on("end", function() {
       console.log('POSTDATA',postData.split("=")[1]);
-      httpHelpers.serveAssets(response, postData.split("=")[1]);
+      httpHelpers.serveAssets(response, "/"+postData.split("=")[1]);
     });
   },
   OPTIONS: function(request, response) {
