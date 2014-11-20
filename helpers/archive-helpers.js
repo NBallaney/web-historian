@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var httpHelpers = require('../web/http-helpers')
 var _ = require('underscore');
 
 /*
@@ -9,7 +10,7 @@ var _ = require('underscore');
  * customize it in any way you wish.
  */
 
-exports.paths = {
+exports.paths = paths = {
   'siteAssets' : path.join(__dirname, '../web/public'),
   'archivedSites' : path.join(__dirname, '../archives/sites'),
   'list' : path.join(__dirname, '../archives/sites.txt')
@@ -37,10 +38,11 @@ exports.isUrlInList = function(list, requestedUrl){
   return _.contains(list, requestedUrl);
 };
 
-exports.addUrlToList = function(requestedUrl){
-  fs.write("./archives/sites.txt", requestedUrl+"\n", "utf8", function(err) {
+exports.addUrlToList = function(response, requestedUrl){
+  fs.appendFile(paths.list, requestedUrl+"\n", "utf8", function(err) {
     if(err) throw err;
     console.log("Data was added to file");
+    httpHelpers.readFile(response, "./web/public/loading.html", 302);
   });
 };
 

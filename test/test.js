@@ -23,7 +23,7 @@ beforeEach(function(){
 
 describe("Node Server Request Listener Function", function() {
 
-  xit("Should answer GET requests for /", function(done) {
+  it("Should answer GET requests for /", function(done) {
     var req = new stubs.Request("/", "GET");
 
     handler.handleRequest(req, res);
@@ -52,7 +52,7 @@ describe("Node Server Request Listener Function", function() {
     });
   });
 
-  xit("Should append submitted sites to 'sites.txt'", function(done) {
+  it("Should append submitted sites to 'sites.txt'", function(done) {
     var url = "www.example.com";
     var req = new stubs.Request("/", "POST", {url: url});
 

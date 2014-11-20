@@ -5,11 +5,11 @@ var url = require('url');
 // require more modules/folders here!
 
 var actions = {
-  GET: function(request, response, requestUrl) {
-    httpHelpers.serveAssets(response, requestUrl);
+  GET: function(request, response, requestedUrl) {
+    httpHelpers.serveAssets(response, requestedUrl);
   },
   POST: function(request, response) {
-
+    archive.addUrlToList(response, request._postData.url);
   },
   OPTIONS: function(request, response) {
 
@@ -18,7 +18,8 @@ var actions = {
 
 
 exports.handleRequest = function (request, response) {
-  var requestUrl = url.parse(request.url).path;
-  actions[request.method](request, response, requestUrl);
+  var requestedUrl = url.parse(request.url).path;
+  console.log("HANDLEDREQUEST",requestedUrl);
+  actions[request.method](request, response, requestedUrl);
   response.end(archive.paths.list);
 };

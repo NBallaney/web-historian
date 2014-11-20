@@ -17,27 +17,30 @@ exports.sendResponse = sendResponse = function(response, html, statusCode) {
   response.end(html);
 };
 
-exports.readFile = readFile = function(response, requestUrl) {
-  console.log("READFILE",requestUrl);
-  fs.readFile(requestUrl, "utf8", function(err, data) {
+exports.readFile = readFile = function(response, requestedUrl, statusCode) {
+  console.log("READFILE",requestedUrl);
+  fs.readFile(requestedUrl, "utf8", function(err, data) {
     if(err) throw err;
-    sendResponse(response, data);
+    sendResponse(response, data, statusCode);
   });
 }
 
-exports.serveAssets = serveAssets = function(response, requestUrl, callback) {
-  console.log("SERVEDASSETS",requestUrl);
-  if(requestUrl === "/") {
+exports.serveAssets = serveAssets = function(response, requestedUrl, callback) {
+  console.log("SERVEDASSETS",requestedUrl);
+  if(requestedUrl === "/") {
     return readFile(response, "./web/public/index.html");
   }
 
   archive.readListOfUrls(function(list) {
     console.log('reading list of urls', list);
-    if(archive.isUrlInList(list, requestUrl)) {
+    if(archive.isUrlInList(list, requestedUrl.slice(1))) {
       console.log('contains the url');
-      readFile(response, "./archives/sites"+requestUrl);
+      return readFile(response, "./archives/sites"+requestedUrl);
+    } else {
+      return archive.addUrlToList(response, requestedUrl);
     }
-  });
+});
+
 
   // We have a site URL
   // Read the sites
