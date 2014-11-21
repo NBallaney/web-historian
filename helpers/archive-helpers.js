@@ -41,23 +41,33 @@ exports.addUrlToList = function(response, requestedUrl){
     console.log("Url was added to file");
     httpHelpers.readFile(response, paths.siteAssets+"/loading.html", 302);
   });
+
 };
 
 exports.isUrlArchived = function(urlList){
   _.each(urlList, function (url) {
     fs.readFile(paths.archivedSites + url, 'utf8' , function (err, data) {
-      if(err) return;
-      this.downloadUrls(url);
+      if(err) {
+        downloadUrls(url);
+      }
+      return;
     })
   })
 };
 
-exports.downloadUrls = function(url){
-  httpRequest.get({'url':url}, paths.archivedSites + url, function (err,res) {
-    console.log("DOWNLOADING URLS", res);
+exports.downloadUrls = downloadUrls = function(url){
+  requestUrl = "http://"+url;
+  console.log("DOWNLOADING URL",url);
+
+  httpRequest.get({url: requestUrl},
+    paths.archivedSites +"/"+ url, function (err, res) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    fs.appendFile('/Users/HR10/2014-10-web-historian/workers/log.txt', url+"\n", 'utf8', function(err) {
     if(err) throw err;
-    fs.appendFile('/workers/log.txt', url, 'utf8', function(err) {
-      if(err) throw err;
+    console.log(res.code, res.headers, res.file);
     });
   });
 };

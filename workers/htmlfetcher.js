@@ -1,8 +1,16 @@
-var archive = require('../archives/archive-helpers.js');
+var archive = require('../helpers/archive-helpers.js');
 var fs = require('fs');
 var httpRequest = require('http-request');
 
 archive.readListOfUrls(archive.isUrlArchived);
+
+// httpRequest.get('http://www.amazon.com', function (err, res) {
+//   if (err) {
+//     console.error(err);
+//     return;
+//   }
+//   console.log(res.code, res.headers, res.buffer.toString());
+// });
 
 
 // Read the list of urls
